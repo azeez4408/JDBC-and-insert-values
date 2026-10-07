@@ -1,0 +1,85 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class InsertRecord {
+
+    public static void main(String[] args) {
+
+        // Database details
+        String url = "jdbc:mysql://localhost:3306/college";
+        String username = "root";
+        String password = "your_password";
+
+        // SQL query
+        String sql = "INSERT INTO students (id, name, course) VALUES (?, ?, ?)";
+
+        try {
+            // Establish database connection
+            Connection con = DriverManager.getConnection(
+                    url, username, password
+            );
+
+            System.out.println("Database connected successfully!");
+
+            // Create PreparedStatement
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            // Set values
+            ps.setInt(1, 4);
+            ps.setString(2, "Ravi");
+            ps.setString(3, "Java");
+
+            // Execute insert operation
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Record inserted successfully.");
+            }
+
+            // Close resources
+            ps.close();
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println("Error occurred while inserting record.");
+            e.printStackTrace();
+        }
+    }
+}
+
+Example database table
+
+First create the database and table in MySQL:
+
+CREATE DATABASE college;
+
+USE college;
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    course VARCHAR(50)
+);
+
+
+The Java program inserts:
+
+ID     Name     Course
+4      Ravi     Java
+
+Important JDBC methods
+
+DriverManager.getConnection() — establishes the database connection.
+
+prepareStatement() — creates a parameterized SQL statement.
+
+setInt() — sets an integer value.
+
+setString() — sets a string value.
+
+executeUpdate() — executes the INSERT operation.
+
+close() — closes the database resources.
+
+Note: Add the MySQL Connector/J JDBC driver to your Java project's classpath before running the program.
